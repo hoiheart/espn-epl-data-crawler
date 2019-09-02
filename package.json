@@ -1,0 +1,15 @@
+{
+  "name": "espn-epl-data-crawler",
+  "version": "1.0.0",
+  "description": "ESPN EPL Data Crawler",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "cd scripts && node standings.js && node statistics.js && node fixtures.js && node teams.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "puppeteer": "^1.19.0"
+  }
+}
