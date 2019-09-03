@@ -5,11 +5,19 @@ const fs = require('fs');
   console.log('teams & players loading...');
 
   try {
-    const standings = fs.readFileSync('../data/standings/standings.json');
-    const teams = JSON.parse(standings).children[0].standings.entries.map(entry => entry.team.id);
-
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
+
+    await page.goto('http://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/teams');
+
+    const teamsBodyHandle = await page.$('body pre');
+    const teamsData = await page.evaluate(body => body.innerHTML, teamsBodyHandle);
+    await teamsBodyHandle.dispose();
+    
+    await fs.mkdirSync('../data/teams/', { recursive: true });
+    await fs.writeFileSync(`../data/teams/teams.json`, teamsData);
+
+    const teams = JSON.parse(teamsData).sports[0].leagues[0].teams.map(data => data.team.id);
 
     for (let teamID of teams) {
       await page.goto('http://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/teams/' + teamID);
