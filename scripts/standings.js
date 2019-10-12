@@ -9,13 +9,11 @@ const fs = require('fs');
     const page = await browser.newPage();
 
     await page.goto('http://site.api.espn.com/apis/v2/sports/soccer/eng.1/standings');
+    await page.content(); 
+    const json = await page.evaluate(() => JSON.parse(document.querySelector("body").innerText));
 
-    const bodyHandle = await page.$('body pre');
-    const data = await page.evaluate(body => body.innerHTML, bodyHandle);
-    await bodyHandle.dispose();
-
-    await fs.mkdirSync('../data/standings/', { recursive: true });
-    await fs.writeFileSync('../data/standings/standings.json', data);
+    await fs.mkdirSync('./data/standings/', { recursive: true });
+    await fs.writeFileSync('./data/standings/standings.json', JSON.stringify(json));
 
     await browser.close();
     

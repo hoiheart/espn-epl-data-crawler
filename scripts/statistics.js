@@ -9,13 +9,11 @@ const fs = require('fs');
     const page = await browser.newPage();
 
     await page.goto('http://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/statistics');
+    await page.content(); 
+    const json = await page.evaluate(() => JSON.parse(document.querySelector("body").innerText));
 
-    const bodyHandle = await page.$('body pre');
-    const data = await page.evaluate(body => body.innerHTML, bodyHandle);
-    await bodyHandle.dispose();
-
-    await fs.mkdirSync('../data/statistics/', { recursive: true });
-    await fs.writeFileSync('../data/statistics/statistics.json', data);
+    await fs.mkdirSync('./data/statistics/', { recursive: true });
+    await fs.writeFileSync('./data/statistics/statistics.json', JSON.stringify(json));
 
     await browser.close();
 
