@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "cd scripts && node standings.js && node statistics.js && node fixtures.js && node teams.js"
+    "start": "node ./scripts/standings.js && node ./scripts/statistics.js && node ./scripts/fixtures.js && node ./scripts/teams.js"
   },
   "author": "",
   "license": "ISC",
